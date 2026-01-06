@@ -1,0 +1,89 @@
+--  Creating database
+CREATE DATABASE
+Banking_systems;
+
+-- Activating Database
+USE Banking_systems;
+
+-- Creating Tables
+-- Creating Customers Tables
+CREATE TABLE Customer (
+    Customer_ID INT IDENTITY(1,1) PRIMARY KEY,
+    First_Name VARCHAR(50) NOT NULL,
+    Last_Name VARCHAR(35) NOT NULL,
+    Birth_Date DATE NULL,
+    Gender VARCHAR(10) NOT NULL CHECK (Gender IN ('Male', 'Female', 'Other')),
+    Email VARCHAR(50) NULL UNIQUE,
+    Phone_Number VARCHAR(20) NOT NULL UNIQUE,
+    Address VARCHAR(150) NULL
+); 
+
+-- Inserting Values
+INSERT INTO Customer (First_Name, Last_Name, Birth_Date, Gender, Email, Phone_Number, Address) VALUES
+('John', 'Okoro', '1990-04-12', 'Male', 'john.okoro1@example.com', '08030000001', '12 Apple Street, Enugu'),
+('Ada', 'Nwosu', '1988-09-21', 'Female', 'ada.nwosu2@example.com', '08030000002', '25 Garden Road, Awka'),
+('Samuel', 'Eze', '1995-01-15', 'Male', 'sam.eze3@example.com', '08030000003', '5 Unity Close, Owerri'),
+('Chioma', 'Umeh', '1992-07-30', 'Female', 'chioma.umeh4@example.com', '08030000004', '44 Palm Avenue, Onitsha'),
+('Grace', 'Chukwu', '1985-12-05', 'Female', 'grace.chukwu5@example.com', '08030000005', '10 Sunrise Street, Abakaliki'),
+('Ifeanyi', 'Okafor', '1991-03-19', 'Male', 'ifeanyi.okafor6@example.com', '08030000006', '3 Hilltop Road, Nsukka'),
+('Ngozi', 'Mbah', '1989-11-08', 'Female', 'ngozi.mbah7@example.com', '08030000007', '18 Unity Lane, Owerri'),
+('Emeka', 'Ibe', '1993-02-22', 'Male', 'emeka.ibe8@example.com', '08030000008', '7 Church Street, Umuahia'),
+('Chidinma', 'Nnaji', '1994-10-11', 'Female', 'chidinma.nnaji9@example.com', '08030000009', '55 Oak Road, Enugu'),
+('Michael', 'Onu', '1990-06-17', 'Male', 'michael.onu10@example.com', '08030000010', '66 Pound Street, Aba'),
+('Ebube', 'Oko', '1997-08-13', 'Male', 'ebube.oko11@example.com', '08030000011', '21 Liberty Avenue, Awka'),
+('Peace', 'Nweke', '1992-04-29', 'Female', 'peace.nweke12@example.com', '08030000012', '13 Mango Close, Ogbete'),
+('Chukwuemeka', 'Nwoke', '1991-01-19', 'Male', 'chukwuemeka.nwoke13@example.com', '08030000013', '41 Zik Avenue, Enugu'),
+('Oluchi', 'Okoroafor', '1987-09-15', 'Female', 'oluchi.okoroafor14@example.com', '08030000014', '9 Ebeano Street, Enugu'),
+('Uche', 'Nworgu', '1993-12-20', 'Male', 'uche.nworgu15@example.com', '08030000015', '17 Rail Line Road, Aba'),
+('Blessing', 'Ilo', '1996-05-14', 'Female', 'blessing.ilo16@example.com', '08030000016', '20 Peace Estate, Owerri'),
+('Kingsley', 'Ochi', '1994-03-10', 'Male', 'kingsley.ochi17@example.com', '08030000017', '4 Wisdom Crescent, Onitsha'),
+('Amaka', 'Igwe', '1992-10-08', 'Female', 'amaka.igwe18@example.com', '08030000018', '12 Peace Street, Nsukka'),....
+
+
+ creating Accounts Table
+CREATE TABLE Accounts (
+    Customer_ID INT NOT NULL, FOREIGN KEY (Customer_ID) REFERENCES Customer(Customer_ID), 
+       Account_Number VARCHAR(20) NOT NULL UNIQUE,
+    Account_Type VARCHAR(20) NOT NULL CHECK (Account_Type IN ('Savings', 'Current', 'Fixed Deposit')),
+    Balance DECIMAL(18,2) NOT NULL DEFAULT 0.00,
+    Date_Opened DATE NOT NULL DEFAULT GETDATE(),
+    Status VARCHAR(15) NOT NULL CHECK (Status IN ('Active', 'Dormant', 'Closed')),
+);
+---Inserting Values
+
+ Creating Transaction Table
+CREATE TABLE Transactions (
+    Transaction_ID INT IDENTITY(1,1) PRIMARY KEY, FOREIGN KEY (Account_Number) REFERENCES Accounts(Account_Number),
+    Account_Number VARCHAR(20) NOT NULL,          -- links to Accounts
+    Transaction_Type VARCHAR(20) NOT NULL CHECK (Transaction_Type IN ('Deposit', 'Withdrawal', 'Transfer')),
+    Amount DECIMAL(18,2) NOT NULL CHECK (Amount > 0),
+    Transaction_Date DATETIME NOT NULL DEFAULT GETDATE(),
+    Description VARCHAR(255) NULL,
+    );
+
+    INSERT INTO Transactions (Account_Number, Transaction_Type, Amount, Transaction_Date, Description)
+VALUES
+('ACCT20210001','Deposit',5000.00,'2023-01-05','Salary deposit'),
+('ACCT20200002','Withdrawal',2000.00,'2023-01-06','ATM withdrawal'),
+('ACCT20190003','Deposit',1500.00,'2023-01-07','Cash deposit'),
+('ACCT20220004','Withdrawal',1200.00,'2023-01-08','Bill payment'),
+('ACCT20230005','Deposit',3000.00,'2023-01-09','Mobile transfer'),
+('ACCT20180006','Deposit',1000.00,'2023-01-10','Gift received'),
+('ACCT20200007','Withdrawal',2500.00,'2023-01-11','POS purchase'),
+('ACCT20210008','Deposit',2000.00,'2023-01-12','Salary deposit'),
+('ACCT20190009','Transfer',3500.00,'2023-01-13','Transfer to friend'),
+('ACCT20230010','Withdrawal',1000.00,'2023-01-14','Utility payment'),
+('ACCT20220011','Deposit',4000.00,'2023-01-15','Cash deposit'),
+('ACCT20170012','Withdrawal',500.00,'2023-01-16','ATM withdrawal'),
+('ACCT20210013','Deposit',1200.00,'2023-01-17','Gift received'),
+('ACCT20200014','Transfer',1500.00,'2023-01-18','Transfer to account'),
+('ACCT20180015','Deposit',1800.00,'2023-01-19','Cash deposit'),
+('ACCT20220016','Withdrawal',800.00,'2023-01-20','POS purchase'),
+('ACCT20230017','Deposit',5000.00,'2023-01-21','Salary deposit'),
+('ACCT20160018','Transfer',2200.00,'2023-01-22','Transfer to friend'),
+('ACCT20210019','Withdrawal',3000.00,'2023-01-23','Bill payment'),
+('ACCT20200020','Deposit',2500.00,'2023-01-24','Cash deposit'),
+('ACCT20190021','Withdrawal',1000.00,'2023-01-25','ATM withdrawal'),
+('ACCT20180022','Deposit',3500.00,'2023-01-26','Gift received'),
+
+
