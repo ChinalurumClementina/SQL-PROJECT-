@@ -1,0 +1,76 @@
+----PROJECT QUERIES
+SELECT*
+FROM Customer;
+
+SELECT  COUNT(*) Gender
+FROM Customer
+WHERE Gender = 'Female';
+
+SELECT  COUNT(*) Gender
+FROM Customer
+WHERE Gender = 'male';
+
+SELECT COUNT(*) AS Total_Customers
+FROM Customer;
+
+SELECT COUNT(*) Birth_Date,
+       DATEDIFF(YEAR, Birth_Date, GETDATE()) AS Age
+FROM Customer
+WHERE DATEDIFF(YEAR, Birth_Date, GETDATE()) < 40
+GROUP BY Birth_Date;
+
+SELECT 
+    CASE 
+        WHEN DATEDIFF(YEAR, Birth_Date, GETDATE()) < 30 THEN 'Under 30'
+        WHEN DATEDIFF(YEAR, Birth_Date, GETDATE()) BETWEEN 30 AND 40 THEN '30 - 40'
+        ELSE 'Above 40'
+    END AS Age_Group,
+    COUNT(*) AS Total_Customers
+FROM Customer
+GROUP BY 
+    CASE 
+        WHEN DATEDIFF(YEAR, Birth_Date, GETDATE()) < 30 THEN 'Under 30'
+        WHEN DATEDIFF(YEAR, Birth_Date, GETDATE()) BETWEEN 30 AND 40 THEN '30 - 40'
+        ELSE 'Above 40'
+    END;
+
+SELECT*
+FROM Accounts
+
+SELECT Account_Type, COUNT(*) AS Total_Accounts
+FROM Accounts
+GROUP BY Account_Type;
+
+SELECT SUM(Balance) AS Total_Balance
+FROM Accounts;
+
+SELECT Account_Type, AVG(Balance) AS Average_Balance
+FROM Accounts
+GROUP BY Account_Type;
+
+SELECT Status, COUNT(*) AS Total
+FROM Accounts
+GROUP BY Status;
+
+SELECT COUNT(*) AS Total_Transactions
+FROM Transactions;
+
+SELECT Transaction_Type, SUM(Amount) AS Total_Amount
+FROM Transactions
+GROUP BY Transaction_Type;
+
+SELECT 
+    FORMAT(Transaction_Date, 'yyyy-MM') AS Month,
+    COUNT(*) AS Total_Transactions
+FROM Transactions
+GROUP BY FORMAT(Transaction_Date, 'yyyy-MM')
+ORDER BY Month;
+
+SELECT Account_Number, MAX(Amount) AS Highest_Transaction
+FROM Transactions
+GROUP BY Account_Number
+
+SELECT TOP 5 Account_Number, COUNT(*) AS Number_of_Transactions
+FROM Transactions
+GROUP BY Account_Number
+ORDER BY Number_of_Transactions DESC;
